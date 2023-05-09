@@ -9,9 +9,9 @@ MPIFLAGS =
 
 LIBS=
 
-PRODUCT= DensityFinder 
+PRODUCT= DensityFinder wfcSingle
 
-CFILES= DensityFinder.cpp wfc.cpp block.cpp
+CFILES= DensityFinder.cpp wfcSingle.cpp wfc.cpp block.cpp
 
 SRCS= ${HFILES} ${CFILES}
 OBJS= ${CFILES:.c=.o}
@@ -23,6 +23,9 @@ clean:
 	-rm -f ${PRODUCT} ${DERIVED} ${GARBAGE}
 
 DensityFinder: DensityFinder.cpp wfc.o block.o
+	$(CPP) $(CFLAGS) -o $@ $^ $(LIB_DIRS) -lm
+
+wfcSingle: wfcSingle.cpp wfc.o block.o
 	$(CPP) $(CFLAGS) -o $@ $^ $(LIB_DIRS) -lm
 
 wfc.o: wfc.cpp wfc.h block.o
