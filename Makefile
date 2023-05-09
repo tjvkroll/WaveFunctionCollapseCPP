@@ -5,6 +5,7 @@ CPP = g++
 CDEFS=
 CFLAGS= -g -O2 -std=c++17 -fopenmp -Wall $(INCLUDE_DIRS) $(CDEFS)
 LFLAGS= -c -g -O2 -std=c++17 -fopenmp -Wall $(INCLUDE_DIRS) $(CDEFS)
+MPIFLAGS = 
 
 LIBS=
 

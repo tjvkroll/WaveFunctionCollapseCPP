@@ -49,6 +49,11 @@ vector<vector<WFCBlock>> WFC::GetTilemap(){
   return tilemap; 
 }
 
+void WFC::SetTilemap(vector<vector<WFCBlock>> map){
+  tilemap = map; 
+}
+
+
 
 // Debugging helper mostly : NOT CURRENTLY BEING CALLED
 void WFC::DisplayTilemap() {
@@ -64,22 +69,22 @@ void WFC::DisplayTilemap() {
 
 
 // Calculating the density based on pixels in final pgm
-string WFC::Density(){
+double WFC::Density(){
 
-  float n = (float)tilemap.size();
-  float pix_dim = (n * n) * 9.0;
-  float pix_cnt = 0;   
+  double pix_dim = (double)(height * width) * 9.0;
+  double pix_cnt = 0;   
   
 // PRAGMA CANDIDATE  
-#pragma omp parallel for num_threads(threads)
+#pragma omp parallel for num_threads(threads) reduction(+: pix_cnt)
   for (auto& row : tilemap) {
-#pragma omp parallel for num_threads(threads)
+#pragma omp parallel for num_threads(threads) reduction(+: pix_cnt)
     for (auto& tile : row) {
       pix_cnt += tile.superPositions[0].density;
     }
   }
-  float dens = pix_cnt / pix_dim;
-  return to_string(dens);  
+  double dens = pix_cnt / pix_dim;
+  //cout << "pix_cnt: " << pix_cnt << "  pix_dim: " << pix_dim << "  density: " << dens << endl; 
+  return dens;  
 }
 
 // Returns a vector of neighbor tuples {Direction, location} for all the neighbors of any tile

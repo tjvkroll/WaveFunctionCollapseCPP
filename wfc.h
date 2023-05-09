@@ -50,8 +50,9 @@ class WFC {
 	
 	vector<vector<WFCBlock>> GetTilemap();
 	int GetNumThreads();
+	void SetTilemap(vector<vector<WFCBlock>> map);
     void DisplayTilemap();
-	string Density();
+	double Density();
 	void Propogate(location next_location);
 	void Iterate();
 	void IterateSpecific(int x, int y, string name);

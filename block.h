@@ -10,13 +10,13 @@ DIRECTION reverse(DIRECTION dir);
 
 class BuildingBlock {
  public:
-  BuildingBlock(string name, vector<uint8_t> bitmap, bool* sides, int weight, float density)
+  BuildingBlock(string name, vector<uint8_t> bitmap, bool* sides, int weight, double density)
       : name(name), bitmap(bitmap), connections(sides), weight(weight), density(density) {}
   string name;
   vector<uint8_t> bitmap;
   bool* connections;
   int weight;
-  float density;
+  double density;
 };
 
 class WFCBlock {

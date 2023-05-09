@@ -17,8 +17,10 @@ int WFCBlock::RandomBasedOnWeights(){
       probs.push_back(i);
     }
   }
-  // using rand_r to avoid threaded slowdown when running in parallel. 
-  int random_idx = rand_r((unsigned int *)time(NULL)) % probs.size();
+  // using rand_r to avoid threaded slowdown when running in parallel.
+  // unsigned int my_int = (unsigned int)time(NULL);
+  // int random_idx = rand_r(&my_int) % probs.size();
+  int random_idx = rand() % probs.size();
   return probs[random_idx];
 }
 
