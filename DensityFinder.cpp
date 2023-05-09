@@ -44,18 +44,23 @@ int main (int argc, char *argv[]){
 	int size, num_threads, ndim, min_max; 
 	string file, outfile = "result.pgm"; 
   
-
+	// error checking on arguments
 	if (argc < 4 && argc > 1) {
-    cout << "Invalid args: <exe> <outfile> <Dim> <num_threads>\n";
-    exit(1);
-  }
+    	cout << "Invalid args: <exe> <outfile> <Dim> <num_threads>\n";
+    	exit(1);
+  	}
 
+	// argument style
 	if(argc > 1){
 		min_max = stoi(argv[1]);
 		ndim = stoi(argv[2]);
 		num_threads = stoi(argv[3]);
-		printf("Running with mode: %d ndim: %d num_threads: %d\n", min_max, ndim, num_threads);
+		string mode; 
+		if(min_max == 1) mode = "minimum"; 
+		else mode = "maximum";
+		cout << "Searching for " << mode << " density in a " << ndim << "X" << ndim << " image using num_threads: " << num_threads << endl;
 	}
+	//user input style
 	else{
 		cout << "Would you it to be small, medium, or large?\n1) Small (40x40)\n2) Medium (100x100)\n3) Large(200x200)\n";
 		cin >> size;
@@ -77,10 +82,14 @@ int main (int argc, char *argv[]){
 		else if(size == 3) ndim = 200; 
 	}
 
+	// holds tilemap to replace into wfc class at the end and call functions on
 	vector<vector<WFCBlock>> placeholder; 
 
+	// where the work is done
   clock_gettime(CLOCK_MONOTONIC, &start_t);
 #pragma omp parallel for num_threads(num_threads)
+	
+	// searching over 100 different iterations of wfc to find min/max density
 	for(int i = 0; i < 100; i++){
 	WFC wfc(ndim, ndim, WFCBlock(BUILDINGBLOCKS), num_threads);
 
@@ -91,7 +100,8 @@ int main (int argc, char *argv[]){
 			} catch (std::runtime_error const& e) {
 					// searching for min/max 
 #pragma omp critical 
-{
+{					
+					//logic to save min/max	
 					double tmp = wfc.Density();
 					if(min_max == 2){
 						if(tmp > max){
@@ -111,13 +121,16 @@ int main (int argc, char *argv[]){
 		}
 	}
 
+	// taking results and making final wfc class to work with
 	WFC wfc_final(ndim, ndim, WFCBlock(BUILDINGBLOCKS), num_threads);
 	wfc_final.SetTilemap(placeholder);
 
+	//finding density
   clock_gettime(CLOCK_MONOTONIC,& wfc_end_t);
   cout << "Density: " << to_string(wfc_final.Density()) << endl;
   clock_gettime(CLOCK_MONOTONIC,& dens_end_t);
-
+	
+	// generatng pixel map 
   cout << "Generating pixmap: " << outfile << endl << endl;
   PGMDAT d = wfc_final.Tilemap_To_Pgmdat();
   PGM::WritePGM(outfile, d);
