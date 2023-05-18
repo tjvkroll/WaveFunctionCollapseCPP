@@ -33,7 +33,12 @@ vector<BuildingBlock> BUILDINGBLOCKS{
 };
 
 int main (int argc, char *argv[]){
-    srand(time(0));
+    
+    // Randomness vs repeatable results
+    //srand(time(0));
+    
+    srand(200);
+    
     struct timespec start_t, wfc_end_t, pix_end_t, dens_end_t; 
     double start, wfc_end, pix_end, dens_end; 
 	int num_threads, ndim; 
