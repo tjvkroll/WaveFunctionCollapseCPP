@@ -17,9 +17,6 @@ int WFCBlock::RandomBasedOnWeights(){
       probs.push_back(i);
     }
   }
-  // using rand_r to avoid threaded slowdown when running in parallel.
-  // unsigned int my_int = (unsigned int)time(NULL);
-  // int random_idx = rand_r(&my_int) % probs.size();
   int random_idx = rand() % probs.size();
   return probs[random_idx];
 }
@@ -27,11 +24,6 @@ int WFCBlock::RandomBasedOnWeights(){
 
 // Choosing a BUILDING BLOCK OUT OF REMAINING OPTIONS
 void WFCBlock::CollapseSuperPositions() {
-  // FIX TO ACTUALLY USE WEIGHTS.
-  // int sum_of_weight = 0;
-  // for (int i = 0; i < superPositions.size(); i++) {
-  //   sum_of_weight += superPositions[i].weight;
-  // }
   int rnd = RandomBasedOnWeights();
   BuildingBlock tmp = superPositions[rnd];
   superPositions.clear();
@@ -40,19 +32,12 @@ void WFCBlock::CollapseSuperPositions() {
 
 // Allowing for collapsing of specific tiles so we can force images
 void WFCBlock::CollapseSpecific(string name){
-  bool found = false; 
   for(auto index: superPositions){
     if(index.name == name){
       BuildingBlock tmp = index; 
       superPositions.clear();
       superPositions.push_back(tmp); 
-      found = true; 
     }
-  }
-
-  // Throw error if building block in unavailable to collapse
-  if(found == false){
-    //throw(std::runtime_error("No building block %s available\n", name));
   }
 
 }

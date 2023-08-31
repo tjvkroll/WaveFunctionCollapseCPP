@@ -8,6 +8,8 @@ enum DIRECTION { UP, DOWN, LEFT, RIGHT };
 
 DIRECTION reverse(DIRECTION dir);
 
+
+// A single block that exists as a option in super position
 class BuildingBlock {
  public:
   BuildingBlock(string name, vector<uint8_t> bitmap, bool* sides, int weight, double density)
@@ -19,6 +21,7 @@ class BuildingBlock {
   double density;
 };
 
+// All possible options for a tile
 class WFCBlock {
  public:
   WFCBlock(vector<BuildingBlock> bb) : superPositions(bb){};
