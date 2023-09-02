@@ -301,7 +301,7 @@ bool WFC::validate() {
       location cur(i, j);
       vector<Neighbor> neighbors = get_neighbors(cur, height, width);
       // compare current tile to its neighbors for valid connections
-      for (int k = 0; k < neighbors.size(); k++) {
+      for (uint k = 0; k < neighbors.size(); k++) {
         // get the indexes of "connections" for cur tile and its neighbor
         DIRECTION neighbor_dir = neighbors[k].dir;
         DIRECTION cur_dir = reverse(neighbor_dir);
